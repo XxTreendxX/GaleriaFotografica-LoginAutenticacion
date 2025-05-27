@@ -1,11 +1,20 @@
-function App() {
-  return (
-    <div className="bg-blue-600 text-white p-8 text-center">
-      <h1 className="text-3xl font-bold underline text-blue-500">
-        ¡Tailwind está funcionandoasdasdasd!
-      </h1>
-    </div>
-  );
-}
+<BrowserRouter>
+  <AuthProvider>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/galeria" element={<Galeria />} />
+      <Route path="/foto/:id" element={<FotoDetalle />} />
+      <Route path="/sobre-mi" element={<SobreMi />} />
+      <Route path="/contacto" element={<Contacto />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-export default App;
+      {/* Rutas protegidas */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/admin" element={<AdminPanel />} />
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </AuthProvider>
+</BrowserRouter>;
