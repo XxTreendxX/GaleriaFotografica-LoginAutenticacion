@@ -13,6 +13,7 @@ import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Feed from "./pages/Feed";
 
 function App() {
   return (
@@ -27,17 +28,16 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/galeria" element={<Galeria />} />
+                <Route path="/feed" element={<Feed />} />
                 <Route path="/foto/:id" element={<FotoDetalle />} />
                 <Route path="/sobre-mi" element={<SobreMi />} />
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-
                 {/* Rutas protegidas */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/admin" element={<AdminPanel />} />
                 </Route>
-
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
