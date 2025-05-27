@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-// import { useAuth } from "../hooks/useAuth"; // Si ya usás autenticación
+
+function validarEmail(email) {
+  // Expresión regular simple para validar emails
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 function Login() {
-  // const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,15 +18,17 @@ function Login() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
-  // UX: mostrar/ocultar contraseña
   const [showPass, setShowPass] = useState(false);
+
+  // Validación en vivo
+  const emailValido = !formData.email || validarEmail(formData.email);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(""); // Limpia error al tipear
   };
 
   const handleSubmit = async (e) => {
@@ -31,9 +36,12 @@ function Login() {
     setError("");
     setSuccess(false);
 
-    // Simulación: validación básica
     if (!formData.email || !formData.password) {
       setError("Completá todos los campos.");
+      return;
+    }
+    if (!validarEmail(formData.email)) {
+      setError("Ingresá un correo válido.");
       return;
     }
     if (formData.password.length < 6) {
@@ -41,14 +49,13 @@ function Login() {
       return;
     }
 
-    // Simula login exitoso (reemplazá por tu lógica real de login)
+    // Simula login exitoso (reemplazá por tu lógica real)
     setTimeout(() => {
       setSuccess(true);
       setTimeout(() => {
-        navigate("/admin"); // Redirecciona después del login exitoso
+        navigate("/admin");
       }, 1000);
     }, 700);
-    // Si usás login real, reemplazá lo de arriba por tu lógica de login
   };
 
   return (
@@ -82,14 +89,22 @@ function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:border-blue-500 transition-all duration-150 shadow-sm focus:shadow-lg focus:ring-2 focus:ring-blue-400"
+              className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:border-blue-500 transition-all duration-150 shadow-sm focus:shadow-lg focus:ring-2 focus:ring-blue-400 ${
+                formData.email && !emailValido ? "border-red-500" : ""
+              }`}
               autoComplete="off"
             />
           </div>
+          {/* Tooltip de email inválido */}
+          {formData.email && !emailValido && (
+            <span className="text-xs text-red-500 pl-1">
+              Ingresá un correo electrónico válido.
+            </span>
+          )}
         </div>
 
         {/* Contraseña */}
-        <div className="mb-6">
+        <div className="mb-2">
           <label className="block text-sm font-medium text-[#374151] mb-1 text-left">
             Contraseña
           </label>
@@ -110,6 +125,16 @@ function Login() {
               {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           </div>
+        </div>
+
+        {/* Recuperar contraseña */}
+        <div className="flex justify-end mb-6">
+          <Link
+            to="/recuperar"
+            className="text-xs text-blue-600 hover:underline font-medium"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
         </div>
 
         <button

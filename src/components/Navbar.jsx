@@ -1,67 +1,96 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
+  Menu,
+  X,
   Home,
   Image,
-  LayoutGrid,
-  User,
-  Mail,
+  Users,
+  GalleryHorizontal,
   LogIn,
   UserPlus,
-  Camera,
-} from "lucide-react";
-
-const navLinks = [
-  { to: "/", label: "Inicio", icon: <Home className="w-5 h-5" /> },
-  { to: "/galeria", label: "Galería", icon: <Image className="w-5 h-5" /> },
-  { to: "/feed", label: "Feed", icon: <LayoutGrid className="w-5 h-5" /> },
-  { to: "/sobre-mi", label: "Sobre mí", icon: <User className="w-5 h-5" /> },
-  { to: "/contacto", label: "Contacto", icon: <Mail className="w-5 h-5" /> },
-  {
-    to: "/login",
-    label: "Iniciar sesión",
-    icon: <LogIn className="w-5 h-5" />,
-  },
-  {
-    to: "/register",
-    label: "Registrarte",
-    icon: <UserPlus className="w-5 h-5" />,
-  },
-];
+  Send,
+} from "lucide-react"; // Agrega más iconos si querés
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
 
+  const navLinks = [
+    { to: "/", text: "Inicio", icon: <Home size={20} /> },
+    { to: "/galeria", text: "Galería", icon: <GalleryHorizontal size={20} /> },
+    { to: "/sobre-mi", text: "Sobre mí", icon: <Users size={20} /> },
+    { to: "/contacto", text: "Contacto", icon: <Send size={20} /> },
+    { to: "/login", text: "Iniciar sesión", icon: <LogIn size={20} /> },
+    { to: "/register", text: "Registrarte", icon: <UserPlus size={20} /> },
+  ];
+
+  // Cierra el menú al navegar en mobile
+  const handleNavClick = () => setOpen(false);
+
   return (
-    <aside className="fixed top-0 left-0 h-screen w-40 bg-white border-r border-gray-200 flex flex-col justify-between py-8 px-4">
-      {/* Logo */}
-      <div className="flex items-center justify-center gap-2 mb-8">
-        <Camera className="w-6 h-6 text-black" />
-        <span className="font-semibold tracking-wide text-sm">RodriDev</span>
-      </div>
+    <>
+      {/* Hamburguesa SOLO en mobile/tablet */}
+      <button
+        className="fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-md border md:hidden"
+        onClick={() => setOpen(true)}
+        aria-label="Abrir menú"
+      >
+        <Menu size={26} />
+      </button>
 
-      {/* Navegación */}
-      <nav className="flex flex-col gap-4">
-        {navLinks.map((link) => (
-          <Link
-            key={link.to}
-            to={link.to}
-            className={`flex items-center gap-2 text-sm px-2 py-2 rounded-md transition-colors duration-200 ${
-              location.pathname === link.to
-                ? "bg-[#2563EB] text-white"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
+      {/* Navbar lateral (sidebar) */}
+      <aside
+        className={`
+    fixed z-40 left-0 top-0 h-screen w-60 bg-white shadow-md border-r flex flex-col
+    transition-transform duration-300
+    ${open ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0
+  `}
+      >
+        {/* Cerrar menú en mobile */}
+        <div className="md:hidden flex justify-end p-2">
+          <button
+            onClick={() => setOpen(false)}
+            className="p-2 hover:bg-gray-100 rounded-full"
+            aria-label="Cerrar menú"
           >
-            {link.icon}
-            <span>{link.label}</span>
-          </Link>
-        ))}
-      </nav>
+            <X size={26} />
+          </button>
+        </div>
+        {/* Links navegación */}
+        <nav className="flex flex-col gap-2 mt-8 px-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`flex items-center gap-2 px-4 py-2 rounded transition
+                ${
+                  location.pathname === link.to
+                    ? "bg-blue-100 text-blue-600 font-semibold"
+                    : "hover:bg-blue-50 text-gray-700"
+                }
+              `}
+              onClick={handleNavClick}
+            >
+              {link.icon} {link.text}
+            </Link>
+          ))}
+        </nav>
+        {/* Footer */}
+        <div className="mt-auto px-6 py-5 text-xs text-gray-400">
+          © 2025 Rodrigo Otreras
+        </div>
+      </aside>
 
-      {/* Pie opcional o redes (luego) */}
-      <div className="text-xs text-gray-400 text-center mt-8">
-        © 2025 Rodrigo Otreras
-      </div>
-    </aside>
+      {/* Overlay para cerrar el menú al hacer click fuera (solo mobile) */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/20 z-30 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+    </>
   );
 }
 

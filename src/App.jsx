@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Tus páginas
 import Home from "./pages/Home";
 import Galeria from "./pages/Galeria";
 import FotoDetalle from "./pages/FotoDetalle";
@@ -13,35 +14,33 @@ import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Feed from "./pages/Feed";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen bg-gradient-to-br from-[#f4f6f8] to-[#e2e8f0]">
+          {/* NAVBAR: Siempre fijo y visible a la izquierda */}
           <Navbar />
 
-          {/* Contenido principal */}
-          <div className="flex flex-col flex-grow">
-            <main className="flex-1 flex px-6 bg-gradient-to-br from-[#f4f6f8] to-[#e2e8f0]">
+          {/* MAIN: Padding left en desktop para no tapar el contenido */}
+          <div className="flex-1 flex flex-col min-h-screen md:pl-60">
+            <main className="flex-1 flex flex-col">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/galeria" element={<Galeria />} />
-                <Route path="/feed" element={<Feed />} />
                 <Route path="/foto/:id" element={<FotoDetalle />} />
                 <Route path="/sobre-mi" element={<SobreMi />} />
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                {/* Rutas protegidas */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/admin" element={<AdminPanel />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
-
+            {/* El footer siempre abajo, dentro del main */}
             <Footer />
           </div>
         </div>

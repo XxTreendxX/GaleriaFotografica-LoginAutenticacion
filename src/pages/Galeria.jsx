@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Image, ChevronDown } from "lucide-react";
 
 const FOTOS_POR_PAGINA = 6;
@@ -182,6 +182,9 @@ function Galeria() {
   const [filtro, setFiltro] = useState("Todos");
   const [cantidadMostrada, setCantidadMostrada] = useState(FOTOS_POR_PAGINA);
 
+  // Ref para hacer scroll al grid cuando cambias de categoría (opcional UX)
+  const gridRef = useRef(null);
+
   // Filtro las fotos según la categoría seleccionada
   const fotosFiltradas =
     filtro === "Todos"
@@ -195,6 +198,10 @@ function Galeria() {
   const handleFiltro = (cat) => {
     setFiltro(cat);
     setCantidadMostrada(FOTOS_POR_PAGINA);
+    setTimeout(() => {
+      // Hace scroll suave al inicio de la galería al cambiar de filtro (UX)
+      gridRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
   };
 
   return (
@@ -223,7 +230,10 @@ function Galeria() {
         ))}
       </div>
       {/* Grid de fotos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-2">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-2 mb-8"
+      >
         {fotosAMostrar.map((foto, idx) => (
           <div
             key={idx}
@@ -244,13 +254,17 @@ function Galeria() {
       </div>
       {/* Botón "Ver más" SOLO si hay más fotos por mostrar */}
       {cantidadMostrada < fotosFiltradas.length && (
-        <button
-          onClick={() => setCantidadMostrada((prev) => prev + FOTOS_POR_PAGINA)}
-          className="mt-8 px-6 py-3 flex items-center gap-2 rounded-full bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition group"
-        >
-          <span>Ver más</span>
-          <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-        </button>
+        <div className="flex justify-center w-full">
+          <button
+            onClick={() =>
+              setCantidadMostrada((prev) => prev + FOTOS_POR_PAGINA)
+            }
+            className="px-6 py-3 flex items-center gap-2 rounded-full bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition group"
+          >
+            <span>Ver más</span>
+            <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
+          </button>
+        </div>
       )}
     </section>
   );
