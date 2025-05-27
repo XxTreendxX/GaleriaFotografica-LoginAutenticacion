@@ -11,7 +11,7 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
+    <div className="flex flex-1 flex-col justify-center items-center text-center">
       <div className="bg-white p-6 rounded shadow-md w-full max-w-md text-center">
         <h1 className="text-2xl font-bold mb-4">
           Bienvenido, {user?.name || user?.email}

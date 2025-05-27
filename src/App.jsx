@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext"; // lo crearemos
-import ProtectedRoute from "./components/ProtectedRoute"; // lo crearemos
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// Importá tus páginas
 import Home from "./pages/Home";
 import Galeria from "./pages/Galeria";
 import FotoDetalle from "./pages/FotoDetalle";
@@ -12,24 +11,40 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/galeria" element={<Galeria />} />
-          <Route path="/foto/:id" element={<FotoDetalle />} />
-          <Route path="/sobre-mi" element={<SobreMi />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/admin" element={<AdminPanel />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="flex min-h-screen">
+          <Navbar />
+
+          {/* Contenido principal */}
+          <div className="flex flex-col flex-grow">
+            <main className="flex-1 flex px-6 bg-gradient-to-br from-[#f4f6f8] to-[#e2e8f0]">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/galeria" element={<Galeria />} />
+                <Route path="/foto/:id" element={<FotoDetalle />} />
+                <Route path="/sobre-mi" element={<SobreMi />} />
+                <Route path="/contacto" element={<Contacto />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
+                {/* Rutas protegidas */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/admin" element={<AdminPanel />} />
+                </Route>
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+
+            <Footer />
+          </div>
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );
