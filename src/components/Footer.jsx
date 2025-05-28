@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 
-function Footer() {
+function Footer({ className = "" }) {
   return (
-    <footer className="bg-gradient-to-t from-[#f4f6f8] to-[#e2e8f0] border-t border-gray-200 py-4">
+    <footer
+      className={`w-full bg-gradient-to-t from-[#f4f6f8] to-[#e2e8f0] border-t border-gray-200 py-4 ${className}`}
+    >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 px-6 md:pl-40 text-[#1F2937]">
+        {/* Logo o nombre */}
         <a
           href="https://www.rodridev.com.ar"
           target="_blank"
           rel="noopener noreferrer"
           className="text-xl font-bold tracking-tight text-blue-600 hover:text-blue-500 transition"
-          aria-label="LinkedIn"
+          aria-label="RodriDev"
         >
           RodriDev
         </a>
@@ -32,7 +35,6 @@ function Footer() {
               <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.024-3.037-1.85-3.037-1.852 0-2.135 1.445-2.135 2.939v5.667H9.354V9h3.414v1.561h.047c.476-.902 1.636-1.85 3.368-1.85 3.602 0 4.265 2.37 4.265 5.455v6.286zM5.337 7.433c-1.144 0-2.069-.927-2.069-2.068 0-1.142.926-2.069 2.069-2.069 1.142 0 2.068.927 2.068 2.069 0 1.141-.926 2.068-2.068 2.068zm1.777 13.019H3.561V9h3.553v11.452z" />
             </svg>
           </a>
-
           {/* GitHub */}
           <a
             href="https://github.com/XxTreendxX"

@@ -10,7 +10,7 @@ import {
   LogIn,
   UserPlus,
   Send,
-} from "lucide-react"; // Agrega más iconos si querés
+} from "lucide-react";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -42,11 +42,11 @@ function Navbar() {
       {/* Navbar lateral (sidebar) */}
       <aside
         className={`
-    fixed z-40 left-0 top-0 h-screen w-60 bg-white shadow-md border-r flex flex-col
-    transition-transform duration-300
-    ${open ? "translate-x-0" : "-translate-x-full"}
-    md:translate-x-0
-  `}
+          fixed z-40 left-0 top-0 h-screen w-60 bg-white shadow-md border-r flex flex-col
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
       >
         {/* Cerrar menú en mobile */}
         <div className="md:hidden flex justify-end p-2">
@@ -58,6 +58,16 @@ function Navbar() {
             <X size={26} />
           </button>
         </div>
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 px-6 pt-5 pb-2 text-xl font-bold text-blue-600"
+          onClick={handleNavClick}
+        >
+          <GalleryHorizontal size={28} /> RodriDev
+        </Link>
+
         {/* Links navegación */}
         <nav className="flex flex-col gap-2 mt-8 px-2">
           {navLinks.map((link) => (
@@ -77,6 +87,10 @@ function Navbar() {
             </Link>
           ))}
         </nav>
+        {/* Footer mini en el navbar */}
+        <div className="mt-auto px-6 py-5 text-xs text-gray-400">
+          © 2025 Rodrigo Otreras
+        </div>
       </aside>
 
       {/* Overlay para cerrar el menú al hacer click fuera (solo mobile) */}
