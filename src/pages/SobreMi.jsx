@@ -1,83 +1,68 @@
 import { Instagram, Linkedin, Download } from "lucide-react";
+import profileImg from "../assets/profile.jpg";
 
-export default function SobreMi() {
+function SobreMi() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-to-br from-[#f4f6f8] to-[#e2e8f0]">
-      <div className="bg-white shadow-xl rounded-3xl max-w-4xl w-full p-0 md:flex items-center">
-        {/* Columna imagen */}
-        <div className="flex-1 flex justify-center md:justify-end items-center bg-gradient-to-t from-blue-100 to-white rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none p-8">
-          <img
-            src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
-            alt="Rodrigo Otreras Fotógrafo"
-            className="w-48 h-48 rounded-full object-cover border-4 border-blue-300 shadow-lg"
-          />
-        </div>
-        {/* Columna texto */}
-        <div className="flex-1 px-8 py-10">
-          <h2 className="text-4xl font-black text-gray-900 mb-1">
-            Rodrigo Otreras
-          </h2>
-          <p className="text-xl font-semibold text-blue-600 mb-4">
-            Fotógrafo Profesional
-          </p>
-          <p className="text-gray-600 mb-6 leading-relaxed max-w-xl">
-            Me dedico a capturar momentos y emociones únicas. Con más de{" "}
-            <span className="font-bold text-gray-800">
-              5 años de experiencia
-            </span>{" "}
-            en retratos, eventos y productos, mi objetivo es crear imágenes con
-            alma y estilo propio.
-            <br />
-            <span className="block mt-2">
-              ¿Buscás fotografías con calidad profesional y una mirada creativa?
-              ¡Hablemos!
-            </span>
-          </p>
-          {/* Skills */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {[
-              "Retratos",
-              "Eventos",
-              "Productos",
-              "Edición Creativa",
-              "Fotografía Artística",
-            ].map((skill) => (
-              <span
-                key={skill}
-                className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold tracking-wide shadow-sm"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-          {/* Botones */}
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="https://instagram.com/tuusuario"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-semibold hover:scale-105 transition"
-            >
-              <Instagram size={18} /> Instagram
-            </a>
-            <a
-              href="https://linkedin.com/in/tuusuario"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2 rounded-full bg-blue-700 text-white font-semibold hover:bg-blue-800 transition"
-            >
-              <Linkedin size={18} /> LinkedIn
-            </a>
-            <a
-              href="/cv-rodri.pdf"
-              download
-              className="flex items-center gap-2 px-5 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition"
-            >
-              <Download size={18} /> Descargar CV
-            </a>
-          </div>
-        </div>
+    <section className="flex flex-col items-center justify-center py-12">
+      <img
+        src={profileImg}
+        alt="Rodrigo Otreras"
+        className="w-40 h-40 rounded-full shadow-lg border-4 border-blue-100 object-cover mb-6"
+      />
+      <h2 className="text-4xl font-bold mb-2">Rodrigo Otreras</h2>
+      <h3 className="text-xl text-blue-600 font-semibold mb-4">
+        Fotógrafo Profesional
+      </h3>
+      <p className="text-gray-600 max-w-2xl text-center mb-5">
+        ¡Hola! Soy Rodrigo, apasionado de la fotografía. Me encanta capturar
+        momentos únicos y contar historias reales a través de mi lente. <br />
+        Especializado en{" "}
+        <span className="font-medium text-blue-500">
+          retratos, naturaleza y eventos
+        </span>
+        . Siempre busco la luz y el detalle para crear imágenes inolvidables.
+      </p>
+      <div className="flex flex-wrap gap-2 mb-5">
+        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+          Retratos
+        </span>
+        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+          Naturaleza
+        </span>
+        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+          Eventos
+        </span>
+        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+          Edición Creativa
+        </span>
+      </div>
+      <div className="flex gap-4 mb-6">
+        <a
+          href="https://instagram.com/tu_instagram"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-lg font-semibold transition"
+        >
+          <Instagram /> Instagram
+        </a>
+        <a
+          href="https://linkedin.com/in/tu_linkedin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition"
+        >
+          <Linkedin /> LinkedIn
+        </a>
+        <a
+          href="/Rodrigo_Otreras_CV.pdf"
+          download
+          className="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded-lg font-semibold transition"
+        >
+          <Download /> Descargar CV
+        </a>
       </div>
     </section>
   );
 }
+
+export default SobreMi;
