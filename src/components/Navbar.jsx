@@ -77,10 +77,6 @@ function Navbar() {
             </Link>
           ))}
         </nav>
-        {/* Footer */}
-        <div className="mt-auto px-6 py-5 text-xs text-gray-400">
-          © 2025 Rodrigo Otreras
-        </div>
       </aside>
 
       {/* Overlay para cerrar el menú al hacer click fuera (solo mobile) */}

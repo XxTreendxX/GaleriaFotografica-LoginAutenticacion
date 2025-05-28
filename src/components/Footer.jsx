@@ -4,21 +4,20 @@ function Footer() {
   return (
     <footer className="bg-gradient-to-t from-[#f4f6f8] to-[#e2e8f0] border-t border-gray-200 py-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 px-6 md:pl-40 text-[#1F2937]">
-        {/* Marca */}
-        <Link
-          to="/"
+        <a
+          href="https://www.rodridev.com.ar"
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-xl font-bold tracking-tight text-blue-600 hover:text-blue-500 transition"
-          aria-label="Volver al inicio"
+          aria-label="LinkedIn"
         >
           RodriDev
-        </Link>
-
+        </a>
         {/* Derechos */}
         <p className="text-sm text-gray-500 text-center md:text-left">
           © {new Date().getFullYear()} Rodrigo Otreras — Todos los derechos
           reservados
         </p>
-
         {/* Redes sociales */}
         <div className="flex space-x-6">
           {/* LinkedIn */}

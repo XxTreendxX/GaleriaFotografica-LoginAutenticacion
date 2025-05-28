@@ -1,208 +1,67 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Image, ChevronDown } from "lucide-react";
+import PhotoCard from "../components/PhotoCard";
+import CategoryFilter from "../components/CategoryFilter";
+import GalleryGrid from "../components/GalleryGrid";
+import fotosGaleria from "../data/fotosGaleria";
+import Loader from "../components/Loader";
+import PhotoModal from "../components/PhotoModal";
 
 const FOTOS_POR_PAGINA = 6;
-
-const fotosGaleria = [
-  // --- PAISAJES ---
-  {
-    url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-    alt: "Montaña nevada al atardecer",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=600&q=80",
-    alt: "Lago y bosque en otoño",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-    alt: "Valle entre montañas",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
-    alt: "Costa rocosa y mar",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80",
-    alt: "Camino entre árboles",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
-    alt: "Montañas y nubes",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-    alt: "Playa al amanecer",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465156799763-2c087c332922?auto=format&fit=crop&w=600&q=80",
-    alt: "Cascada en la montaña",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1433878455169-4698b20b6be9?auto=format&fit=crop&w=600&q=80",
-    alt: "Pradera y cielo azul",
-    autor: "Autor de Ejemplo",
-    categoria: "Paisajes",
-  },
-
-  // --- RETRATOS ---
-  {
-    url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato de mujer sonriente",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato en blanco y negro",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato creativo de hombre",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465101178521-c1a9136a3150?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato de joven con luz lateral",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato con fondo desenfocado",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato artístico en el bosque",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato femenino al aire libre",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato cálido y natural",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-    alt: "Retrato con expresión intensa",
-    autor: "Autor de Ejemplo",
-    categoria: "Retratos",
-  },
-
-  // --- NATURALEZA/ANIMALES ---
-  {
-    url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
-    alt: "Ciervo en el bosque",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465101178521-c1a9136a3150?auto=format&fit=crop&w=600&q=80",
-    alt: "Pájaro posado en rama",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80",
-    alt: "Mariposa en flor",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1465156799763-2c087c332922?auto=format&fit=crop&w=600&q=80",
-    alt: "Lobo entre los árboles",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=600&q=80",
-    alt: "Pato en lago al amanecer",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-    alt: "Águila volando",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-    alt: "Caballo en la pradera",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-    alt: "Gato salvaje entre arbustos",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80",
-    alt: "Zorro en el campo",
-    autor: "Autor de Ejemplo",
-    categoria: "Naturaleza",
-  },
-];
 
 const categorias = [
   "Todos",
   ...Array.from(new Set(fotosGaleria.map((f) => f.categoria))),
 ];
 
+// COMPONENTE
 function Galeria() {
   const [filtro, setFiltro] = useState("Todos");
   const [cantidadMostrada, setCantidadMostrada] = useState(FOTOS_POR_PAGINA);
-
-  // Ref para hacer scroll al grid cuando cambias de categoría (opcional UX)
+  const [loading, setLoading] = useState(true);
+  const [fotoModal, setFotoModal] = useState(null); // Foto actual en modal
+  const [fotoIndex, setFotoIndex] = useState(0); // Índice foto actual en modal
   const gridRef = useRef(null);
 
-  // Filtro las fotos según la categoría seleccionada
+  // Filtrar según categoría
   const fotosFiltradas =
     filtro === "Todos"
       ? fotosGaleria
       : fotosGaleria.filter((f) => f.categoria === filtro);
 
-  // Array de fotos que realmente se muestran
+  // Paginado
   const fotosAMostrar = fotosFiltradas.slice(0, cantidadMostrada);
 
-  // Cuando cambio de filtro, vuelvo a mostrar solo las primeras
+  useEffect(() => {
+    // Simula carga inicial (puede ser un fetch real)
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader mensaje="Cargando fotos..." />;
+
+  // Cambia filtro y vuelve al top de grid
   const handleFiltro = (cat) => {
     setFiltro(cat);
     setCantidadMostrada(FOTOS_POR_PAGINA);
-    setTimeout(() => {
-      // Hace scroll suave al inicio de la galería al cambiar de filtro (UX)
-      gridRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
   };
+
+  // Maneja click en la foto para abrir el modal con índice
+  const handleFotoClick = (foto, idx) => {
+    setFotoModal(foto);
+    setFotoIndex(idx);
+  };
+
+  // Navegación entre fotos en el modal
+  const handleNavigate = (idx) => {
+    if (idx >= 0 && idx < fotosAMostrar.length) {
+      setFotoModal(fotosAMostrar[idx]);
+      setFotoIndex(idx);
+    }
+  };
+
+  // Cierra el modal
+  const handleCloseModal = () => setFotoModal(null);
 
   return (
     <section className="w-full flex-1 flex flex-col items-center py-12">
@@ -211,48 +70,20 @@ function Galeria() {
         <Image className="w-7 h-7 text-blue-600" />
         <h1 className="text-3xl font-bold text-[#1F2937]">Galería</h1>
       </div>
-      {/* Filtros por categoría */}
-      <div className="mb-8 flex flex-wrap gap-4">
-        {categorias.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleFiltro(cat)}
-            className={`px-4 py-2 rounded-full border
-              ${
-                filtro === cat
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-[#1F2937] border-gray-300 hover:bg-blue-50"
-              }
-              transition`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+
+      {/* Filtros */}
+      <CategoryFilter
+        categorias={categorias}
+        categoriaSeleccionada={filtro}
+        onChange={handleFiltro}
+      />
+
       {/* Grid de fotos */}
-      <div
-        ref={gridRef}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-2 mb-8"
-      >
-        {fotosAMostrar.map((foto, idx) => (
-          <div
-            key={idx}
-            className="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden transition"
-          >
-            <img
-              src={foto.url}
-              alt={foto.alt}
-              className="w-full h-64 object-cover"
-              loading="lazy"
-            />
-            <div className="p-3">
-              <p className="font-medium text-[#1F2937] truncate">{foto.alt}</p>
-              <span className="text-xs text-gray-500">{foto.autor}</span>
-            </div>
-          </div>
-        ))}
+      <div ref={gridRef} className="w-full max-w-6xl mx-auto px-2 mb-8">
+        <GalleryGrid fotos={fotosAMostrar} onFotoClick={handleFotoClick} />
       </div>
-      {/* Botón "Ver más" SOLO si hay más fotos por mostrar */}
+
+      {/* Botón "Ver más" */}
       {cantidadMostrada < fotosFiltradas.length && (
         <div className="flex justify-center w-full">
           <button
@@ -266,180 +97,17 @@ function Galeria() {
           </button>
         </div>
       )}
+
+      {/* Modal de foto */}
+      <PhotoModal
+        foto={fotoModal}
+        fotos={fotosAMostrar}
+        fotoIndex={fotoIndex}
+        onNavigate={handleNavigate}
+        onClose={handleCloseModal}
+      />
     </section>
   );
 }
 
 export default Galeria;
-
-/*
-  const fotosGaleria = [
-    // --- PAISAJES ---
-    {
-      url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-      alt: "Montaña nevada al atardecer",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=600&q=80",
-      alt: "Lago y bosque en otoño",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-      alt: "Valle entre montañas",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
-      alt: "Costa rocosa y mar",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80",
-      alt: "Camino entre árboles",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
-      alt: "Montañas y nubes",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-      alt: "Playa al amanecer",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465156799763-2c087c332922?auto=format&fit=crop&w=600&q=80",
-      alt: "Cascada en la montaña",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1433878455169-4698b20b6be9?auto=format&fit=crop&w=600&q=80",
-      alt: "Pradera y cielo azul",
-      autor: "Autor de Ejemplo",
-      categoria: "Paisajes",
-    },
-
-    // --- RETRATOS ---
-    {
-      url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato de mujer sonriente",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato en blanco y negro",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato creativo de hombre",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465101178521-c1a9136a3150?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato de joven con luz lateral",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato con fondo desenfocado",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato artístico en el bosque",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato femenino al aire libre",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato cálido y natural",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-      alt: "Retrato con expresión intensa",
-      autor: "Autor de Ejemplo",
-      categoria: "Retratos",
-    },
-
-    // --- NATURALEZA/ANIMALES ---
-    {
-      url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
-      alt: "Ciervo en el bosque",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465101178521-c1a9136a3150?auto=format&fit=crop&w=600&q=80",
-      alt: "Pájaro posado en rama",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80",
-      alt: "Mariposa en flor",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1465156799763-2c087c332922?auto=format&fit=crop&w=600&q=80",
-      alt: "Lobo entre los árboles",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=600&q=80",
-      alt: "Pato en lago al amanecer",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-      alt: "Águila volando",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-      alt: "Caballo en la pradera",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-      alt: "Gato salvaje entre arbustos",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80",
-      alt: "Zorro en el campo",
-      autor: "Autor de Ejemplo",
-      categoria: "Naturaleza",
-    },
-  ];
-*/
